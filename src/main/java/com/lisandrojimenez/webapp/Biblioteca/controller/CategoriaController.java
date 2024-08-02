@@ -36,7 +36,7 @@ public class CategoriaController {
             response.put("se agrego con exito", true);
             return ResponseEntity.ok(response);
         }catch(Exception e){
-            response.put("se agrego con exito", false);
+            response.put("se agrego con exito.", false);
             return ResponseEntity.badRequest().body(response);
         }
     }
