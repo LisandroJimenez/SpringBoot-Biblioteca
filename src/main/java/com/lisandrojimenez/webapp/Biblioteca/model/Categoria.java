@@ -1,5 +1,7 @@
 package com.lisandrojimenez.webapp.Biblioteca.model;
 
+import jakarta.validation.constraints.NotNull;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,5 +19,6 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull (message = "Nombre no puede ser nulo")
     private String nombreCategoria;
 }
