@@ -2,7 +2,6 @@ package com.lisandrojimenez.webapp.Biblioteca.service;
 
 import java.util.List;
 
-import com.lisandrojimenez.webapp.Biblioteca.model.Categoria;
 import com.lisandrojimenez.webapp.Biblioteca.model.Cliente;
 
 public interface IClienteService {

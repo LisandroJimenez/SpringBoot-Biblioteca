@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lisandrojimenez.webapp.Biblioteca.model.Categoria;
 import com.lisandrojimenez.webapp.Biblioteca.model.Cliente;
-import com.lisandrojimenez.webapp.Biblioteca.repository.CategoriaRepository;
 import com.lisandrojimenez.webapp.Biblioteca.repository.ClienteRepository;
 
 @Service
