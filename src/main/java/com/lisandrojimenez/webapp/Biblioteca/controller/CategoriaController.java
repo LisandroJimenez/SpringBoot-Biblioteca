@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lisandrojimenez.webapp.Biblioteca.model.Categoria;
@@ -22,20 +22,20 @@ import io.micrometer.core.ipc.http.HttpSender.Response;
 
 @Controller
 @RestController
-@RequestMapping(value = "categoria")
+@RequestMapping(value = "")
 public class CategoriaController {
     @Autowired
     CategoriaService categoriaService;
 
     //listar
-    @GetMapping("/")
+    @GetMapping("/categorias")
     public List<Categoria> listaCategorias() {
         return categoriaService.listarCategorias();
     }
 
     //Buscar
-    @GetMapping("/{id}")
-    public ResponseEntity<Categoria> buscarCategoriaPorId(@PathVariable Long id){
+    @GetMapping("/categoria")
+    public ResponseEntity<Categoria> buscarCategoriaPorId(@RequestParam Long id){
         try {
             return ResponseEntity.ok(categoriaService.buscarCategoriaPorId(id));
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class CategoriaController {
     }
 
     //agregar
-    @PostMapping("/")
+    @PostMapping("/categoria")
     public ResponseEntity<Map<String, Boolean>> agregarCategoria(@RequestBody Categoria categoria){
         Map<String, Boolean> response = new HashMap<>();
 
@@ -59,8 +59,8 @@ public class CategoriaController {
     }
 
     //Editar
-    @PutMapping("/{id}")
-    public ResponseEntity<Map<String, String>> editarCategoria(@PathVariable Long id, @RequestBody Categoria categoriaNueva){
+    @PutMapping("/categoria")
+    public ResponseEntity<Map<String, String>> editarCategoria(@RequestParam Long id, @RequestBody Categoria categoriaNueva){
         Map<String, String> response = new HashMap<>();
         try {
             Categoria categoria = categoriaService.buscarCategoriaPorId(id);
@@ -76,8 +76,8 @@ public class CategoriaController {
 
     
     //Eliminar
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>>eliminarCategoria(@PathVariable Long id){
+    @DeleteMapping("/categoria")
+    public ResponseEntity<Map<String, String>>eliminarCategoria(@RequestParam Long id){
         Map<String, String> response = new HashMap<>();
         try {
             Categoria categoria = categoriaService.buscarCategoriaPorId(id);

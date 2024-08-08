@@ -9,32 +9,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lisandrojimenez.webapp.Biblioteca.model.Cliente;
 import com.lisandrojimenez.webapp.Biblioteca.service.ClienteService;
 
+
 @Controller
 @RestController
-@RequestMapping(value = "cliente")
+@RequestMapping(value = "")
 public class ClienteController {
     @Autowired
     ClienteService clienteService;
 
     //listar
-    @GetMapping("/")
+    @GetMapping("/clientes")
     public List<Cliente> listarClientes(){
         return clienteService.listarCliente();
     }
 
     // buscar
-    @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long id){
+    @GetMapping("/cliente")
+    public ResponseEntity<Cliente> buscarClientePorId(@RequestParam Long id){
         try {
             return ResponseEntity.ok(clienteService.buscarClientePorId(id));
         } catch (Exception e) {
@@ -43,7 +44,7 @@ public class ClienteController {
     }
 
     //agregar
-    @PostMapping("/")
+    @PostMapping("/cliente")
     public ResponseEntity<Map<String,String>> agregarCliente(@RequestBody Cliente cliente){
         Map<String, String> response = new HashMap<>();
 
@@ -58,11 +59,12 @@ public class ClienteController {
     }
     
     //editaar
-    @PutMapping("/{id}")
-    public ResponseEntity<Map<String, String>> editarCliente(@PathVariable Long id, @RequestBody Cliente clienteNuevo){
+    @PutMapping("/cliente")
+    public ResponseEntity<Map<String, String>> editarCliente(@RequestParam Long id, @RequestBody Cliente clienteNuevo){
         Map<String, String> response = new HashMap<>();
         try {
             Cliente cliente = clienteService.buscarClientePorId(id);
+            cliente.setDpi(clienteNuevo.getDpi());
             cliente.setNombre(clienteNuevo.getNombre());
             cliente.setApellido(clienteNuevo.getApellido());
             cliente.setTelefono(clienteNuevo.getTelefono());
@@ -76,8 +78,8 @@ public class ClienteController {
     }
 
     //Eliminar
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String,String>> eliminarCliente(@PathVariable long id){
+    @DeleteMapping("/cliente")
+    public ResponseEntity<Map<String,String>> eliminarCliente(@RequestParam long id){
         Map<String, String> response = new HashMap<>();
         try {
             Cliente cliente = clienteService.buscarClientePorId(id);
