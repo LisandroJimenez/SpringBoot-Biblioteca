@@ -44,8 +44,12 @@ public class EmpleadoController {
     public ResponseEntity<Map<String, String>> guardarEmpleado(@RequestBody Empleado empleado){
         Map<String,String> response = new HashMap<>();
         try {
-            empleadoService.guardarEmpleado(empleado);
-            response.put("message", "se agrego correctamente");
+            if (empleadoService.guardarEmpleado(empleado)) {
+                response.put(null, null);
+            }else{
+                response.put(null, null);
+                return ResponseEntity.badRequest().body(response);
+            }
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("error", "error al agregar el empleado");
