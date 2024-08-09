@@ -15,4 +15,5 @@ public interface IPrestamoService {
     public void eliminarPrestamo(Prestamo prestamo);
 
     public Boolean verificarCliente(Prestamo prestamo);
+
 }

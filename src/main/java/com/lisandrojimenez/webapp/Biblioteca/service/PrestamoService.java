@@ -36,6 +36,7 @@ public class PrestamoService implements IPrestamoService {
                 return false;
             }
         }else if(methodType.equals(methodType.PUT)){
+            prestamoRepository.save(prestamo);
             return true; 
         }
         return true;
@@ -59,5 +60,7 @@ public class PrestamoService implements IPrestamoService {
         }
         return flag;
     }
+
+    
 
 }
