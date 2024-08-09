@@ -27,12 +27,12 @@ public class EmpleadoController {
     EmpleadoService empleadoService;
 
     @GetMapping("/empleados")
-    public List<Empleado>listarEmpleado(){
+    public List<Empleado> listarEmpleado() {
         return empleadoService.listarEmpleados();
     }
 
     @GetMapping("/empleado")
-    public ResponseEntity<Empleado>buscarEmpleadoPorId(@RequestParam Long id){
+    public ResponseEntity<Empleado> buscarEmpleadoPorId(@RequestParam Long id) {
         try {
             return ResponseEntity.ok(empleadoService.buscarEmpleadoPorId(id));
         } catch (Exception e) {
@@ -41,16 +41,16 @@ public class EmpleadoController {
     }
 
     @PostMapping("/empleado")
-    public ResponseEntity<Map<String, String>> guardarEmpleado(@RequestBody Empleado empleado){
-        Map<String,String> response = new HashMap<>();
-        try{
-            if(empleadoService.guardarEmpleado(empleado)){
+    public ResponseEntity<Map<String, String>> guardarEmpleado(@RequestBody Empleado empleado) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            if (empleadoService.guardarEmpleado(empleado)) {
                 response.put("message", "Empleado agregado con éxito");
-            }else{
+            } else {
                 response.put("err", "DPI duplicado");
                 return ResponseEntity.badRequest().body(response);
             }
-            
+
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("error", "error al agregar el empleado");
@@ -59,8 +59,9 @@ public class EmpleadoController {
     }
 
     @PutMapping("/empleado")
-    public ResponseEntity<Map<String,String>>editarEmpleado(@RequestParam Long id, @RequestBody Empleado empleadoNuevo){
-        Map<String,String> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>> editarEmpleado(@RequestParam Long id,
+            @RequestBody Empleado empleadoNuevo) {
+        Map<String, String> response = new HashMap<>();
         try {
             Empleado empleado = empleadoService.buscarEmpleadoPorId(id);
             empleado.setNombre(empleadoNuevo.getNombre());
@@ -68,9 +69,14 @@ public class EmpleadoController {
             empleado.setTelefono(empleadoNuevo.getTelefono());
             empleado.setDireccion(empleadoNuevo.getDireccion());
             empleado.setDpi(empleadoNuevo.getDpi());
-            empleadoService.guardarEmpleado(empleado);
-            response.put("message", "empleado editado con exito");
-            return ResponseEntity.ok(response);
+            if (empleadoService.guardarEmpleado(empleado)) {
+                response.put("message", "empleado editado con exito");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("error", "no se pudo editar el empleado");
+                return ResponseEntity.badRequest().body(response);
+            }
+
         } catch (Exception e) {
             response.put("error", "no se pudo editar el empleado");
             return ResponseEntity.badRequest().body(response);
@@ -78,8 +84,8 @@ public class EmpleadoController {
     }
 
     @DeleteMapping("/empleado")
-    public ResponseEntity<Map<String,String>>eliminarEmpleado(@RequestParam Long id){
-        Map<String,String> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>> eliminarEmpleado(@RequestParam Long id) {
+        Map<String, String> response = new HashMap<>();
         try {
             Empleado empleado = empleadoService.buscarEmpleadoPorId(id);
             empleadoService.eliminarEmpleado(empleado);

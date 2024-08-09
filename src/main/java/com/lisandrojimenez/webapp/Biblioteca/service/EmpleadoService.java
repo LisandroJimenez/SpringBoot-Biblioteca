@@ -42,7 +42,7 @@ public class EmpleadoService implements IEmpleadoService{
         List<Empleado> empleados = listarEmpleados();
         Boolean flag = false;
         for (Empleado empleado2 : empleados) {
-            if(empleado2.getDpi().equals(empleadoNuevo.getDpi())){
+            if(empleado2.getDpi().equals(empleadoNuevo.getDpi()) && !empleado2.getId().equals(empleadoNuevo.getId())){
                 flag = true;
             }
         }
