@@ -62,6 +62,7 @@ public class PrestamoController {
     public ResponseEntity <Map<String,String>>editarPrestamo(@RequestParam Long id, @RequestBody Prestamo prestamoNuevo){
         Map<String, String> response = new HashMap<>();
         try {
+            
             Prestamo prestamo = prestamoService.buscarPrestamoPorId(id);
             prestamo.setCliente(prestamoNuevo.getCliente());
             prestamo.setEmpleado(prestamoNuevo.getEmpleado());
