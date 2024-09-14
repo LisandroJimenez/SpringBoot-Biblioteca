@@ -16,4 +16,6 @@ public interface IPrestamoService {
 
     public Boolean verificarCliente(Prestamo prestamo);
 
+    public Boolean verificarDisponibilidadLibros(Prestamo prestamoNuevo);
+
 }

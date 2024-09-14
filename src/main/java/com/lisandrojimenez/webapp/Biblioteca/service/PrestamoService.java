@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lisandrojimenez.webapp.Biblioteca.model.Libro;
 import com.lisandrojimenez.webapp.Biblioteca.model.Prestamo;
 import com.lisandrojimenez.webapp.Biblioteca.repository.LibroRepository;
 import com.lisandrojimenez.webapp.Biblioteca.repository.PrestamoRepository;
@@ -15,6 +16,8 @@ public class PrestamoService implements IPrestamoService {
 
     @Autowired
     private PrestamoRepository prestamoRepository;
+    @Autowired
+    private LibroRepository libroRepository;
 
     @Override
     public List<Prestamo> listarPrestamos() {
@@ -28,39 +31,57 @@ public class PrestamoService implements IPrestamoService {
 
     @Override
     public Boolean guardarPrestamo(Prestamo prestamo, MethodType methodType) {
-        if (methodType.equals(methodType.POST)) {
-            if (!verificarCliente(prestamo)) {
-                prestamoRepository.save(prestamo);
-                return true;
-            }else{
+        if (methodType.equals(MethodType.POST)) {
+            if (verificarDisponibilidadLibros(prestamo)) {
+                if (!verificarCliente(prestamo)) {
+                    for (Libro libro : prestamo.getLibros()) {
+                        libro.setDisponibilidad(false);
+                        libroRepository.save(libro);
+                    }
+                    prestamoRepository.save(prestamo);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
                 return false;
             }
-        }else if(methodType.equals(methodType.PUT)){
+        } else if (methodType.equals(MethodType.PUT)) {
             prestamoRepository.save(prestamo);
-            return true; 
+            return true;
         }
-        return true;
-
+        return false;
     }
 
     @Override
     public void eliminarPrestamo(Prestamo prestamo) {
+        for (Libro libro : prestamo.getLibros()) {
+            libro.setDisponibilidad(true);
+            libroRepository.save(libro);
+        }
         prestamoRepository.delete(prestamo);
-
     }
 
     @Override
     public Boolean verificarCliente(Prestamo prestamoNuevo) {
         List<Prestamo> prestamos = listarPrestamos();
-        Boolean flag = false;
         for (Prestamo prestamo : prestamos) {
-            if (prestamo.getCliente().getDpi().equals(prestamoNuevo.getCliente().getDpi()) && !prestamo.getId().equals(prestamoNuevo.getId())) {
+            if (prestamo.getCliente().getDpi().equals(prestamoNuevo.getCliente().getDpi())
+                    && prestamo.getVigencia()) {
                 return true;
             }
         }
-        return flag;
+        return false;
     }
 
-    
+    @Override
+    public Boolean verificarDisponibilidadLibros(Prestamo prestamo) {
+        for (Libro libro : prestamo.getLibros()) {
+            if (libro.getDisponibilidad() == null || !libro.getDisponibilidad()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

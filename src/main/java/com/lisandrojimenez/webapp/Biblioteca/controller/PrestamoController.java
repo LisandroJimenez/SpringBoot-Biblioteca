@@ -42,27 +42,32 @@ public class PrestamoController {
     }
 
     @PostMapping("/prestamo")
-    public ResponseEntity<Map<String, String>> guardarPrestamo(@RequestBody Prestamo prestamo){
-        Map<String,String> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>> guardarPrestamo(@RequestBody Prestamo prestamo) {
+        Map<String, String> response = new HashMap<>();
         try {
-            if (prestamoService.guardarPrestamo(prestamo, MethodType.POST)) {
-                response.put("message", "se agrego correctamente");
-                return ResponseEntity.ok(response);
-            }else{
-                response.put("error", "El cliente ya tiene un prestamo");
-            return ResponseEntity.badRequest().body(response);
+            if (!prestamoService.verificarDisponibilidadLibros(prestamo)) {
+                if (prestamoService.guardarPrestamo(prestamo, MethodType.POST)) {
+                    response.put("message", "Préstamo agregado correctamente.");
+                    return ResponseEntity.ok(response);
+                } else {
+                    response.put("error", "El cliente ya tiene un préstamo.");
+                    return ResponseEntity.badRequest().body(response);
+                }
+            } else {
+                response.put("error", "Uno o más libros no están disponibles.");
+                return ResponseEntity.badRequest().body(response);
             }
         } catch (Exception e) {
-            response.put("error", "error al agregar el prestamo");
+            response.put("error", "Error al agregar el préstamo.");
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(response);
         }
     }
 
     @PutMapping("/prestamo")
-    public ResponseEntity <Map<String,String>>editarPrestamo(@RequestParam Long id, @RequestBody Prestamo prestamoNuevo){
+    public ResponseEntity<Map<String, String>> editarPrestamo(@RequestParam Long id, @RequestBody Prestamo prestamoNuevo) {
         Map<String, String> response = new HashMap<>();
         try {
-            
             Prestamo prestamo = prestamoService.buscarPrestamoPorId(id);
             prestamo.setCliente(prestamoNuevo.getCliente());
             prestamo.setEmpleado(prestamoNuevo.getEmpleado());
@@ -70,11 +75,17 @@ public class PrestamoController {
             prestamo.setFechaDePrestamo(prestamoNuevo.getFechaDePrestamo());
             prestamo.setLibros(prestamoNuevo.getLibros());
             prestamo.setVigencia(prestamoNuevo.getVigencia());
-            prestamoService.guardarPrestamo(prestamo, MethodType.PUT);
-            response.put("message", "se edito con exito");
-            return ResponseEntity.ok(response);
+
+            if (!prestamoService.verificarDisponibilidadLibros(prestamoNuevo)) {
+                prestamoService.guardarPrestamo(prestamo, MethodType.PUT);
+                response.put("message", "Préstamo editado con éxito.");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("error", "Uno o más libros no están disponibles.");
+                return ResponseEntity.badRequest().body(response);
+            }
         } catch (Exception e) {
-            response.put("error", "no se pudo editar");
+            response.put("error", "No se pudo editar el préstamo.");
             return ResponseEntity.badRequest().body(response);
         }
     }

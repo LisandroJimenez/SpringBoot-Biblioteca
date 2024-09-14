@@ -30,4 +30,7 @@ public class Libro {
     private String cluster;
     @ManyToOne(fetch = FetchType.EAGER)
     private Categoria categoria;
+    public boolean isDisponible() {
+        return disponibilidad;
+    }
 }

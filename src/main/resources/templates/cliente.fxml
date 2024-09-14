@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lisandrojimenez.webapp.Biblioteca.controller.FXController.ClienteViewController">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Cliente.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="tfDPI" layoutX="48.0" layoutY="114.0" prefHeight="39.0" prefWidth="203.0" />
+      <TextField fx:id="tfNombre" layoutX="48.0" layoutY="220.0" prefHeight="39.0" prefWidth="203.0" />
+      <TextField fx:id="tfApellido" layoutX="48.0" layoutY="327.0" prefHeight="39.0" prefWidth="203.0" />
+      <TextField fx:id="tfTelefono" layoutX="48.0" layoutY="423.0" prefHeight="39.0" prefWidth="203.0" />
+      <TableView fx:id="tblClientes" layoutX="327.0" layoutY="120.0" onMouseClicked="#cargarDatosEditar" prefHeight="399.0" prefWidth="623.0">
+        <columns>
+          <TableColumn fx:id="colDPI" prefWidth="100.0" text="DPI" />
+          <TableColumn fx:id="colNombre" prefWidth="175.0" text="Nombre" />
+            <TableColumn fx:id="colApellido" prefWidth="175.0" text="Apellido" />
+            <TableColumn fx:id="colTelefono" prefWidth="175.0" text="Telefono" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnGuardar" layoutX="44.0" layoutY="477.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="37.0" prefWidth="98.0" style="-fx-background-radius: 20;" text="Guardar" />
+      <Button fx:id="btnLimpiar" layoutX="44.0" layoutY="524.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="37.0" prefWidth="98.0" style="-fx-background-radius: 20;" text="Limpiar Form" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="btnEliminar" layoutX="157.0" layoutY="477.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="37.0" prefWidth="98.0" style="-fx-background-radius: 20;" text="Eliminar" />
+      <TextField fx:id="tfBuscar" layoutX="649.0" layoutY="89.0" prefHeight="25.0" prefWidth="239.0" />
+      <Button fx:id="btnBuscar" layoutX="899.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleButtonAction" text="buscar" />
+   </children>
+</AnchorPane>
